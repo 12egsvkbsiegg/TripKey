@@ -1,14 +1,18 @@
-<!-- filepath: c:\Users\HP\OneDrive\Desktop\WebDev Project\views\includes\navbar.ejs -->
 <style>
   .search-btn {
-    background-color: #fe424d;
-    color: #ffff;
+    background: linear-gradient(135deg, #fe424d 0%, #e63a40 100%);
+    color: white;
     border-radius: 25px;
-    padding: 0 1rem 0 1rem;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(254, 66, 77, 0.3);
   }
   .search-btn:hover {
-    background-color: #fe424d;
-    color: #ffff;
+    background: linear-gradient(135deg, #e63a40 0%, #d32f35 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(254, 66, 77, 0.4);
   }
   .search-btn i {
     display: inline;
@@ -16,8 +20,15 @@
   }
   .search-inp {
     border-radius: 25px;
-    padding: 0.5rem 3rem 0.5rem 3rem;
-    font-size: 0.8rem;
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+    border: 2px solid #e0e0e0;
+    transition: all 0.3s ease;
+  }
+  .search-inp:focus {
+    border-color: #fe424d;
+    box-shadow: 0 0 0 3px rgba(254, 66, 77, 0.1);
+    outline: none;
   }
 </style>
 

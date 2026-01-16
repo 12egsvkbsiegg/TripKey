@@ -1,76 +1,43 @@
 <% layout("/layouts/boilerplate") %>
-
-<style>
-  #filters {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .filter {
-    text-align: center;
-    margin-right: 2rem;
-    margin-top: 2rem;
-    opacity: 0.75;
-  }
-  .filter:hover {
-    opacity: 1;
-    cursor: pointer;
-  }
-  .filter p {
-    font-size: 0.8rem;
-  }
-  .tax-info {
-    display: none;
-  }
-  .tax-toogle {
-    border: 1px solid black;
-    height: 3.2rem;
-    border-radius: 1rem;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    margin-left: 4rem;
-  }
-</style>
 <body>
   <div id="filters">
-    <div class="filter">
+    <div class="filter" data-category="trending">
       <div><i class="fa-solid fa-fire"></i></div>
       <p>Trending</p>
     </div>
-    <div class="filter">
+    <div class="filter" data-category="rooms">
       <div><i class="fa-solid fa-bed"></i></div>
       <p>Rooms</p>
     </div>
-    <div class="filter">
+    <div class="filter" data-category="iconic">
       <div><i class="fa-solid fa-city"></i></div>
-      <p>Iconic Cites</p>
+      <p>Iconic Cities</p>
     </div>
-    <div class="filter">
+    <div class="filter" data-category="mountain">
       <div><i class="fa-solid fa-mountain"></i></div>
-      <p>Mountain Cites</p>
+      <p>Mountain Cities</p>
     </div>
-    <div class="filter">
+    <div class="filter" data-category="castles">
       <div><i class="fa-brands fa-fort-awesome"></i></div>
       <p>Castles</p>
     </div>
-    <div class="filter">
+    <div class="filter" data-category="pools">
       <div><i class="fa-solid fa-person-swimming"></i></div>
       <p>Amazing Pools</p>
     </div>
-    <div class="filter">
+    <div class="filter" data-category="arctic">
       <div><i class="fa-regular fa-snowflake"></i></div>
       <p>Arctic</p>
     </div>
-    <div class="filter">
+    <div class="filter" data-category="farm">
       <div><i class="fa-solid fa-cow"></i></div>
       <p>Farms</p>
     </div>
-    <div class="filter">
+    <div class="filter" data-category="camping">
       <div><i class="fa-solid fa-tents"></i></div>
       <p>Camping</p>
     </div>
-    <div class="filter">
+    <div class="filter" data-category="beaches">
       <div><i class="fa-solid fa-water"></i></div>
       <p>Beaches</p>
     </div>
@@ -90,11 +57,17 @@
     </div>
   </div>
 
-  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+  <div
+    class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3"
+    id="listingsContainer"
+  >
     <% for(let listing of allListings) { %>
-    <div class="col">
-      <a href="/listings/<%= listing._id %>" class="text-decoration-none">
-        <div class="card" style="width: 25rem; position: relative">
+    <div class="listing-card col" data-type="<%= listing.category || 'all' %>">
+      <a
+        href="/listings/<%= listing._id %>"
+        class="text-decoration-none listing-link"
+      >
+        <div class="card" style="width: 100%; position: relative">
           <img
             src="<%=listing.image.url %>"
             class="card-img-top"
@@ -139,16 +112,12 @@
       // Add active class to clicked filter
       filter.classList.add("active");
 
-      let category = filter.getAttribute("data-category");
+      let category = filter.dataset.category;
 
       // Show/hide listings based on category
       listings.forEach((listing) => {
-        let listingType = listing.getAttribute("data-type");
-        if (
-          category === "all" ||
-          listingType === category ||
-          category === "trending"
-        ) {
+        let listingType = listing.dataset.type || "all";
+        if (category === "trending" || listingType === category) {
           listing.style.display = "block";
         } else {
           listing.style.display = "none";

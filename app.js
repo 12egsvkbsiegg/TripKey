@@ -78,6 +78,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
+
 app.use("/listings", listingsRouter);
 app.use("/listings/:id/reviews", reviewsRouter);
 app.use("/", userRouter);
@@ -87,7 +91,9 @@ app.all(/.*/, (req, res, next) => {
 });
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Something Went Wrong" } = err;
-  res.status(statusCode).render("listings/error.ejs", { message });
+  res
+    .status(statusCode)
+    .render("listings/error.ejs", { message, currUser: req.user });
 });
 app.listen(8080, () => {
   console.log("server is listening to port 8080");

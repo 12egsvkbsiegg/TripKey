@@ -55,20 +55,33 @@ module.exports.editListing = async (req, res) => {
 
   let originalImageUrl = listing.image.url;
   originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250");
-  res.render("listings/edit.ejs", { listing, originalImageUrl });
+  res.render("listings/edit.ejs", {
+    listing,
+    originalImageUrl,
+    currUser: req.user,
+  });
 };
 
 //update Listing
 module.exports.updateListing = async (req, res) => {
   let { id } = req.params;
-  let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
 
+  // First, fetch the listing to preserve existing image if not updating
+  let listing = await Listing.findById(id);
+
+  // Update listing data
+  Object.assign(listing, req.body.listing);
+
+  // Only update image if a new file is uploaded
   if (typeof req.file !== "undefined") {
     let url = req.file.path;
     let filename = req.file.filename;
     listing.image = { url, filename };
-    await listing.save();
   }
+
+  // Save the listing with preserved or updated data
+  await listing.save();
+
   req.flash("Success", "Listing Updated!");
   res.redirect(`/listings/${id}`);
 };
