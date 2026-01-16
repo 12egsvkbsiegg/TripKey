@@ -32,13 +32,20 @@ module.exports.showListing = async (req, res) => {
 };
 
 //create post
-module.exports.createPost = async (req, res, next) => {
-  let url = req.file.path;
-  let filename = req.file.filename;
-
+module.exports.createPost = async (req, res) => {
   const newListing = new Listing(req.body.listing);
   newListing.owner = req.user._id;
-  newListing.image = { url, filename };
+
+  if (req.file) {
+    newListing.image = {
+      url: req.file.path,
+      filename: req.file.filename,
+    };
+  } else {
+    req.flash("error", "Image upload failed");
+    return res.redirect("/listings/new");
+  }
+
   await newListing.save();
   req.flash("success", "New Listing Created");
   res.redirect("/listings");
