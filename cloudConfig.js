@@ -9,7 +9,7 @@ cloudinary.config({
 });
 
 const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
+  cloudinary,
   params: {
     folder: "Tripkey_DEV",
     allowed_formats: ["png", "jpg", "jpeg"],
