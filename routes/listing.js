@@ -29,7 +29,7 @@ router.get(
     }).populate("owner");
 
     res.render("listings/index", { allListings: listings });
-  })
+  }),
 );
 
 //index route, createPost route
@@ -38,9 +38,9 @@ router
   .get(wrapAsync(listingController.index))
   .post(
     isLoggedIn,
-    upload.single("image"),
+    upload.single("listing[image]"),
     validateListing,
-    wrapAsync(listingController.createPost)
+    wrapAsync(listingController.createPost),
   );
 
 //New Route
@@ -53,9 +53,9 @@ router
   .put(
     isLoggedIn,
     isOwner,
-    upload.single("image"),
+    upload.single("listing[image]"),
     validateListing,
-    wrapAsync(listingController.updateListing)
+    wrapAsync(listingController.updateListing),
   )
   .delete(isLoggedIn, isOwner, wrapAsync(listingController.destroyListing));
 
@@ -64,7 +64,7 @@ router.get(
   "/:id/edit",
   isLoggedIn,
   isOwner,
-  wrapAsync(listingController.editListing)
+  wrapAsync(listingController.editListing),
 );
 
 module.exports = router;

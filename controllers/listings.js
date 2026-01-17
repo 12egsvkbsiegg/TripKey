@@ -33,21 +33,11 @@ module.exports.showListing = async (req, res) => {
 
 //create post
 module.exports.createPost = async (req, res) => {
+  let url = req.file.path;
+  let filename = req.file.filename;
   const newListing = new Listing(req.body.listing);
   newListing.owner = req.user._id;
-
-  if (req.file) {
-    newListing.image = {
-      url: req.file.path,
-      filename: req.file.filename,
-    };
-  } else {
-    newListing.image = {
-      url: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800",
-      filename: "default-listing",
-    };
-  }
-
+  newListing.image = { url, filename };
   await newListing.save();
   req.flash("success", "New Listing Created");
   res.redirect("/listings");
@@ -87,8 +77,6 @@ module.exports.updateListing = async (req, res) => {
     let filename = req.file.filename;
     listing.image = { url, filename };
   }
-
-  // Save the listing with preserved or updated data
   await listing.save();
 
   req.flash("Success", "Listing Updated!");

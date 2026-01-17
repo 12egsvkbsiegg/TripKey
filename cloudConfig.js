@@ -1,6 +1,6 @@
 require("dotenv").config();
-const cloudinary = require("cloudinary");
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("cloudinary").v2;
+const CloudinaryStorage = require("multer-storage-cloudinary");
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -9,10 +9,10 @@ cloudinary.config({
 });
 
 const storage = new CloudinaryStorage({
-  cloudinary,
+  cloudinary: cloudinary,
   params: {
     folder: "Tripkey_DEV",
-    allowedFormats: ["png", "jpg", "jpeg"],
+    allowed_formats: ["png", "jpg", "jpeg"],
   },
 });
 
