@@ -42,8 +42,10 @@ module.exports.createPost = async (req, res) => {
       filename: req.file.filename,
     };
   } else {
-    req.flash("error", "Image upload failed");
-    return res.redirect("/listings/new");
+    newListing.image = {
+      url: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800",
+      filename: "default-listing",
+    };
   }
 
   await newListing.save();
